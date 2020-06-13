@@ -19,7 +19,7 @@ public class FoodServer {
     private Selector selector;
     private ByteBuffer commandBuffer;
     private ServerSocketChannel serverSocketChannel;
-    private boolean runServer = true;
+    private boolean isRunning = true;
 
     private CommandExecutor commandExecutor;
 
@@ -47,7 +47,7 @@ public class FoodServer {
     public void run() {
         try {
             start();
-            while (runServer) {
+            while (isRunning) {
                 int readyChannels = selector.select();
                 if (readyChannels <= 0) {
                     System.out.println("Still waiting for a ready channel...");
@@ -82,7 +82,7 @@ public class FoodServer {
         } catch (IOException e) {
             System.err.println(String.format("Error in stopping the server. %n%s", e.getMessage()));
         }
-        runServer = false;
+        isRunning = false;
     }
 
     private void accept(SelectionKey key) {

@@ -1,13 +1,13 @@
 package bg.sofia.uni.fmi.mjt.food.server.retriever.data;
 
-import bg.sofia.uni.fmi.mjt.food.server.retriever.FoodInfoRetrieverImpl;
+import bg.sofia.uni.fmi.mjt.food.server.retriever.FoodInfoRetriever;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.data.search.Food;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.data.search.FoodSearch;
 import com.google.gson.Gson;
 
 import java.net.http.HttpClient;
 
-public class FoodDataRetriever extends FoodInfoRetrieverImpl {
+public class FoodDataRetriever extends FoodInfoRetriever {
     private static final String GENERAL_SEARCH_TEMPLATE = "&generalSearchInput=";
     private static final String KEY_WORD_FOR_SEARCH = "search";
 

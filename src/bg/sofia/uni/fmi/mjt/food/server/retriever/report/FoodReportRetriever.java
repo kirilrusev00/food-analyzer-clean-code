@@ -1,14 +1,12 @@
 package bg.sofia.uni.fmi.mjt.food.server.retriever.report;
 
-import bg.sofia.uni.fmi.mjt.food.server.retriever.FoodInfoRetrieverImpl;
-import bg.sofia.uni.fmi.mjt.food.server.retriever.data.search.Food;
-import bg.sofia.uni.fmi.mjt.food.server.retriever.data.search.FoodSearch;
+import bg.sofia.uni.fmi.mjt.food.server.retriever.FoodInfoRetriever;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.report.search.FoodReport;
 import com.google.gson.Gson;
 
 import java.net.http.HttpClient;
 
-public class FoodReportRetriever extends FoodInfoRetrieverImpl {
+public class FoodReportRetriever extends FoodInfoRetriever {
 
     public FoodReportRetriever(HttpClient client, String apiKey) {
         super(client, apiKey);

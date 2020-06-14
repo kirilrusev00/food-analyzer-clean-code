@@ -1,12 +1,7 @@
 package bg.sofia.uni.fmi.mjt.food.server;
 
-import bg.sofia.uni.fmi.mjt.food.server.retriever.FoodInfoRetriever;
-import bg.sofia.uni.fmi.mjt.food.server.retriever.FoodInfoRetrieverFactory;
-import bg.sofia.uni.fmi.mjt.food.server.retriever.FoodInfoRetrieverImpl;
-import bg.sofia.uni.fmi.mjt.food.server.retriever.InformationType;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.data.search.Food;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.data.search.FoodSearch;
-import bg.sofia.uni.fmi.mjt.food.server.retriever.report.FoodReportRetriever;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.report.search.FoodReport;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.report.search.LabelNutrients;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.report.search.LabelNutrientsInfo;

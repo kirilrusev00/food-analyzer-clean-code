@@ -1,7 +1,6 @@
 package bg.sofia.uni.fmi.mjt.food.server.retriever.barcode;
 
-import bg.sofia.uni.fmi.mjt.food.server.cache.Cache;
-import bg.sofia.uni.fmi.mjt.food.server.retriever.FoodInfoRetrieverImpl;
+import bg.sofia.uni.fmi.mjt.food.server.retriever.FoodInfoRetriever;
 
 public class BarcodeRetriever {
 
@@ -38,6 +37,6 @@ public class BarcodeRetriever {
         } else {
             code = codeBuilder.toString().replace("--code=", "");
         }
-        return FoodInfoRetrieverImpl.getGtinUpcCache().get(code);
+        return FoodInfoRetriever.getGtinUpcCache().get(code);
     }
 }

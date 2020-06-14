@@ -2,11 +2,7 @@ package bg.sofia.uni.fmi.mjt.food.server.retriever.report;
 
 import bg.sofia.uni.fmi.mjt.food.server.retriever.FoodInfoRetriever;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.FoodInfoRetrieverFactory;
-import bg.sofia.uni.fmi.mjt.food.server.retriever.FoodInfoRetrieverImpl;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.InformationType;
-import bg.sofia.uni.fmi.mjt.food.server.retriever.data.FoodDataRetriever;
-import bg.sofia.uni.fmi.mjt.food.server.retriever.data.search.Food;
-import bg.sofia.uni.fmi.mjt.food.server.retriever.data.search.FoodSearch;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.report.search.FoodReport;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.report.search.LabelNutrients;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.report.search.LabelNutrientsInfo;
@@ -23,7 +19,6 @@ import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;

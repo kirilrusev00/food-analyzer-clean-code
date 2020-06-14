@@ -5,11 +5,10 @@ import bg.sofia.uni.fmi.mjt.food.server.retriever.FoodInfoRetrieverFactory;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.InformationType;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.barcode.BarcodeRetriever;
 
-import java.io.IOException;
 import java.net.http.HttpClient;
 
 public class CommandExecutor {
-    private static final int INDEX_OF_COMMAND = 0;
+    private static final int INDEX_OF_COMMAND_NAME = 0;
     private static final int INDEX_OF_GTIN_UPC = 1;
 
     private FoodInfoRetriever foodDataRetriever;
@@ -30,9 +29,9 @@ public class CommandExecutor {
             return "Empty command";
         }
         String[] commandParts = splitCommand(commandLine);
-        String command = commandParts[INDEX_OF_COMMAND];
+        String commandName = getCommandName(commandParts);
 
-        switch (command.toLowerCase()) {
+        switch (commandName) {
             case "get-food":
                 return foodDataRetriever.getRequiredInformationAsString(getSearchInput(commandParts));
             case "get-food-report":
@@ -62,5 +61,10 @@ public class CommandExecutor {
             return "Item not found in cache";
         }
         return reply;
+    }
+
+    private String getCommandName(String[] commandParts) {
+        String command = commandParts[INDEX_OF_COMMAND_NAME];
+        return command.toLowerCase();
     }
 }

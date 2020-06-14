@@ -1,8 +1,7 @@
 package bg.sofia.uni.fmi.mjt.food.server.retriever.barcode;
 
-import bg.sofia.uni.fmi.mjt.food.server.retriever.FoodInfoRetriever;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.FoodInfoRetrieverFactory;
-import bg.sofia.uni.fmi.mjt.food.server.retriever.FoodInfoRetrieverImpl;
+import bg.sofia.uni.fmi.mjt.food.server.retriever.FoodInfoRetriever;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.InformationType;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.report.search.FoodReport;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.report.search.LabelNutrients;
@@ -54,7 +53,7 @@ public class BarcodeRetrieverTest {
         when(httpResponseMock.body()).thenReturn(json);
 
         String expected = foodReportRetriever.getRequiredInformationAsString(testFdcId);
-        String actual = ((FoodInfoRetrieverImpl) foodReportRetriever).checkInCache(testFdcId);
+        String actual = ((FoodInfoRetriever) foodReportRetriever).checkInCache(testFdcId);
 
         assertEquals(expected, actual);
     }

@@ -1,9 +1,7 @@
 package bg.sofia.uni.fmi.mjt.food.server.retriever;
 
-import bg.sofia.uni.fmi.mjt.food.server.retriever.data.FoodDataRetriever;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.data.search.Food;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.data.search.FoodSearch;
-import bg.sofia.uni.fmi.mjt.food.server.retriever.report.FoodReportRetriever;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.report.search.FoodReport;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.report.search.LabelNutrients;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.report.search.LabelNutrientsInfo;
@@ -16,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -57,7 +54,7 @@ public class FoodInfoRetrieverImplTest {
         when(httpResponseMock.body()).thenReturn(json);
 
         String expected = foodReportRetriever.getRequiredInformationAsString(testFdcId);
-        String actual = ((FoodInfoRetrieverImpl) foodReportRetriever).checkInCache(testFdcId);
+        String actual = ((FoodInfoRetriever) foodReportRetriever).checkInCache(testFdcId);
 
         assertEquals(expected, actual);
     }
@@ -65,7 +62,7 @@ public class FoodInfoRetrieverImplTest {
     @Test
     public void testGetRequiredInformationAsString_CheckInCache_WhenFoodNotInCache() throws Exception {
         final String testFdcId = "0000000";
-        String actual = ((FoodInfoRetrieverImpl) foodReportRetriever).checkInCache(testFdcId);
+        String actual = ((FoodInfoRetriever) foodReportRetriever).checkInCache(testFdcId);
 
         assertNull(actual);
     }
@@ -82,7 +79,7 @@ public class FoodInfoRetrieverImplTest {
         when(httpResponseMock.body()).thenReturn(json);
 
         String expected = foodDataRetriever.getRequiredInformationAsString(testSearchInput);
-        String actual = ((FoodInfoRetrieverImpl) foodDataRetriever).checkInCache(testSearchInput);
+        String actual = ((FoodInfoRetriever) foodDataRetriever).checkInCache(testSearchInput);
 
         assertEquals(expected, actual);
     }

@@ -31,7 +31,8 @@ public class FoodServer implements AutoCloseable {
             serverSocketChannel.socket().bind(new InetSocketAddress(port));
             commandExecutor = new CommandExecutor(HttpClient.newBuilder().build());
         } catch (IOException e) {
-            System.err.println(String.format("Error while creating the server. %n%s", e.getMessage()));
+            System.err.println("Error while creating the server");
+            e.printStackTrace();
         }
     }
 
@@ -58,7 +59,7 @@ public class FoodServer implements AutoCloseable {
                 while (keyIterator.hasNext()) {
                     SelectionKey key = keyIterator.next();
                     if (key.isReadable()) {
-                        System.out.println("New message!");
+                        System.out.println("New message from client!");
                         this.read(key);
                     } else if (key.isAcceptable()) {
                         System.out.println("New client!");
@@ -69,7 +70,8 @@ public class FoodServer implements AutoCloseable {
             }
         } catch (IOException e) {
             stop();
-            System.err.println(String.format("Error in starting the server. %n%s", e.getMessage()));
+            System.err.println("Error while running the server");
+            e.printStackTrace();
         }
     }
 
@@ -84,7 +86,8 @@ public class FoodServer implements AutoCloseable {
             socketChannel.configureBlocking(false);
             socketChannel.register(selector, SelectionKey.OP_READ);
         } catch (IOException e) {
-            System.err.println(String.format("Error in accepting socket channel. %n%s", e.getMessage()));
+            System.err.println("Error in accepting a new socket channel");
+            e.printStackTrace();
         }
     }
 
@@ -98,15 +101,16 @@ public class FoodServer implements AutoCloseable {
 
             String reply = commandExecutor.executeCommand(message);
 
-            System.out.println("Message: " + message);
-            System.out.println("Reply: " + reply);
+            System.out.println("Message from client: " + message);
+            System.out.println("Reply to client: " + reply);
 
             writeInBuffer(reply);
 
             sendMessageToClient(socketChannel);
         } catch (IOException e) {
             stop();
-            System.err.println(String.format("Error in reading or writing to buffer. %n%s", e.getMessage()));
+            System.err.println("Error in reading or writing to buffer");
+            e.printStackTrace();
         }
     }
 
@@ -127,7 +131,8 @@ public class FoodServer implements AutoCloseable {
         try {
             commandBuffer.put((reply + System.lineSeparator()).getBytes());
         } catch (BufferOverflowException e) {
-            System.err.println(String.format("Message is longer than buffer size. %n%s", e.getMessage()));
+            System.err.println(String.format("Message is longer than buffer size [%d bytes]", BUFFER_SIZE));
+            e.printStackTrace();
         }
         commandBuffer.flip();
     }
@@ -143,7 +148,8 @@ public class FoodServer implements AutoCloseable {
             selector.close();
             serverSocketChannel.close();
         } catch (IOException e) {
-            System.err.println(String.format("Error in stopping the server. %n%s", e.getMessage()));
+            System.err.println("Error in stopping the server");
+            e.printStackTrace();
         }
     }
 

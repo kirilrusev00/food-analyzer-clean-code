@@ -36,7 +36,7 @@ public class FoodServer implements AutoCloseable {
         }
     }
 
-    public void start() {
+    private void start() {
         try {
             serverSocketChannel.configureBlocking(false);
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
@@ -45,7 +45,7 @@ public class FoodServer implements AutoCloseable {
         }
     }
 
-    public void run() {
+    private void run() {
         try {
             while (isRunning) {
                 int readyChannels = selector.select();
@@ -75,7 +75,7 @@ public class FoodServer implements AutoCloseable {
         }
     }
 
-    public void stop() {
+    private void stop() {
         isRunning = false;
     }
 

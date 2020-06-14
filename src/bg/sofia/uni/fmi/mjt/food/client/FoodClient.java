@@ -44,8 +44,8 @@ public class FoodClient {
                 }
             }
         } catch (IOException e) {
-            System.err.println(
-                    String.format("Problem in getting input stream from client socket!%n%s", e.getMessage()));
+            System.err.println("Error in getting input stream from client socket");
+            e.printStackTrace();
         }
     }
 

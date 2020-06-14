@@ -1,7 +1,5 @@
 package bg.sofia.uni.fmi.mjt.food.client;
 
-import bg.sofia.uni.fmi.mjt.food.client.thread.ClientRunnable;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,27 +8,15 @@ import java.nio.channels.Channels;
 import java.nio.channels.SocketChannel;
 import java.util.Scanner;
 
-public class FoodClient {
-    private static final int MIN_WORDS_IN_COMMANDLINE = 1;
+import static bg.sofia.uni.fmi.mjt.food.client.CommandUtilities.checkIfCorrectCommand;
 
+public class FoodClient {
     private String serverHost;
     private int serverPort;
 
     public FoodClient(String serverHost, int serverPort) {
         this.serverHost = serverHost;
         this.serverPort = serverPort;
-    }
-
-    private String[] splitCommand(String command) {
-        return command.trim().split(" ");
-    }
-
-    private boolean checkIfFullCommand(String command) {
-        if (splitCommand(command).length < FoodClient.MIN_WORDS_IN_COMMANDLINE) {
-            System.out.println("Not full command");
-            return false;
-        }
-        return true;
     }
 
     private void run() {
@@ -44,9 +30,10 @@ public class FoodClient {
             while (true) {
                 System.out.println("Enter message: ");
                 String command = scanner.nextLine();
-                if (command.isEmpty() || !checkIfFullCommand(command)) {
+                if (!checkIfCorrectCommand(command)) {
                     continue;
                 }
+
                 System.out.println("Sending message <" + command + "> to the server...");
                 printWriter.println(command);
                 String reply = reader.readLine();

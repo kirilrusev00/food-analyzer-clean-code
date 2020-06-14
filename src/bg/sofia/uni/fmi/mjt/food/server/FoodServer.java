@@ -12,7 +12,7 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-public class FoodServer {
+public class FoodServer implements AutoCloseable {
     private static final int SERVER_PORT = 1111;
     private static final int BUFFER_SIZE = 8 * 1024;
 
@@ -35,7 +35,7 @@ public class FoodServer {
         }
     }
 
-    private void start() {
+    public void start() {
         try {
             serverSocketChannel.configureBlocking(false);
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
@@ -46,7 +46,6 @@ public class FoodServer {
 
     public void run() {
         try {
-            start();
             while (isRunning) {
                 int readyChannels = selector.select();
                 if (readyChannels <= 0) {
@@ -69,19 +68,12 @@ public class FoodServer {
                 }
             }
         } catch (IOException e) {
-            System.err.println(String.format("Error in starting the server. %n%s", e.getMessage()));
-        } finally {
             stop();
+            System.err.println(String.format("Error in starting the server. %n%s", e.getMessage()));
         }
     }
 
-    private void stop() {
-        try {
-            selector.close();
-            serverSocketChannel.close();
-        } catch (IOException e) {
-            System.err.println(String.format("Error in stopping the server. %n%s", e.getMessage()));
-        }
+    public void stop() {
         isRunning = false;
     }
 
@@ -99,38 +91,65 @@ public class FoodServer {
     private void read(SelectionKey key) {
         SocketChannel socketChannel = (SocketChannel) key.channel();
         try {
-            commandBuffer.clear();
-            int r = socketChannel.read(commandBuffer);
-            if (r <= 0) {
-                System.out.println("Nothing to read, closing channel");
-                socketChannel.close();
+            String message = getMessageFromClient(socketChannel);
+            if (message == null) {
                 return;
             }
-            commandBuffer.flip();
-            String message = StandardCharsets.UTF_8.decode(commandBuffer).toString();
 
             String reply = commandExecutor.executeCommand(message);
 
             System.out.println("Message: " + message);
             System.out.println("Reply: " + reply);
 
-            commandBuffer.clear();
-            try {
-                commandBuffer.put((reply + System.lineSeparator()).getBytes());
-            } catch (BufferOverflowException e) {
-                System.err.println(String.format("Message is longer than buffer size. %n%s", e.getMessage()));
-            }
-            commandBuffer.flip();
-            socketChannel.write(commandBuffer);
-            commandBuffer.clear();
+            writeInBuffer(reply);
+
+            sendMessageToClient(socketChannel);
         } catch (IOException e) {
             stop();
             System.err.println(String.format("Error in reading or writing to buffer. %n%s", e.getMessage()));
         }
     }
 
+    private String getMessageFromClient(SocketChannel socketChannel) throws IOException {
+        commandBuffer.clear();
+        int r = socketChannel.read(commandBuffer);
+        if (r <= 0) {
+            System.out.println("Nothing to read, closing channel");
+            socketChannel.close();
+            return null;
+        }
+        commandBuffer.flip();
+        return StandardCharsets.UTF_8.decode(commandBuffer).toString();
+    }
+
+    private void writeInBuffer(String reply) {
+        commandBuffer.clear();
+        try {
+            commandBuffer.put((reply + System.lineSeparator()).getBytes());
+        } catch (BufferOverflowException e) {
+            System.err.println(String.format("Message is longer than buffer size. %n%s", e.getMessage()));
+        }
+        commandBuffer.flip();
+    }
+
+    private void sendMessageToClient(SocketChannel socketChannel) throws IOException {
+        socketChannel.write(commandBuffer);
+        commandBuffer.clear();
+    }
+
+    @Override
+    public void close() {
+        try {
+            selector.close();
+            serverSocketChannel.close();
+        } catch (IOException e) {
+            System.err.println(String.format("Error in stopping the server. %n%s", e.getMessage()));
+        }
+    }
+
     public static void main(String[] args) {
         FoodServer chatServer = new FoodServer(SERVER_PORT);
+        chatServer.start();
         chatServer.run();
     }
 }

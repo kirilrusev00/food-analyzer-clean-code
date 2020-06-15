@@ -1,5 +1,8 @@
 package bg.sofia.uni.fmi.mjt.food.server;
 
+import bg.sofia.uni.fmi.mjt.food.server.commands.Command;
+import bg.sofia.uni.fmi.mjt.food.server.commands.CommandFactory;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.http.HttpClient;
@@ -21,7 +24,7 @@ public class FoodServer implements AutoCloseable {
     private ServerSocketChannel serverSocketChannel;
     private boolean isRunning = true;
 
-    private CommandExecutor commandExecutor;
+    //private CommandExecutor commandExecutor;
 
     public FoodServer(int port) {
         try {
@@ -29,7 +32,7 @@ public class FoodServer implements AutoCloseable {
             commandBuffer = ByteBuffer.allocate(BUFFER_SIZE);
             serverSocketChannel = ServerSocketChannel.open();
             serverSocketChannel.socket().bind(new InetSocketAddress(port));
-            commandExecutor = new CommandExecutor(HttpClient.newBuilder().build());
+            //commandExecutor = new CommandExecutor(HttpClient.newBuilder().build());
         } catch (IOException e) {
             System.err.println("Error while creating the server");
             e.printStackTrace();
@@ -93,13 +96,14 @@ public class FoodServer implements AutoCloseable {
 
     private void read(SelectionKey key) {
         SocketChannel socketChannel = (SocketChannel) key.channel();
+        CommandFactory commandFactory = new CommandFactory(HttpClient.newBuilder().build());
         try {
             String message = getMessageFromClient(socketChannel);
             if (message == null) {
                 return;
             }
 
-            String reply = commandExecutor.executeCommand(message);
+            String reply = commandFactory.processLine(message);//commandExecutor.executeCommand(message);
 
             System.out.println("Message from client: " + message);
             System.out.println("Reply to client: " + reply);

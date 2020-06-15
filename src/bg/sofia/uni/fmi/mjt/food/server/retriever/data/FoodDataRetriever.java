@@ -1,5 +1,6 @@
 package bg.sofia.uni.fmi.mjt.food.server.retriever.data;
 
+import bg.sofia.uni.fmi.mjt.food.server.cache.FoodInfoCache;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.FoodInfoRetriever;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.data.search.Food;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.data.search.FoodSearch;
@@ -23,7 +24,7 @@ public class FoodDataRetriever extends FoodInfoRetriever {
 
     @Override
     public String getRequiredInformationAsString(String searchInput) {
-        String cacheInfo = checkInCache(searchInput);
+        String cacheInfo = FoodInfoCache.checkInCache(searchInput);
         if (cacheInfo != null) {
             System.out.println("Found in cache!");
             return cacheInfo;
@@ -31,18 +32,18 @@ public class FoodDataRetriever extends FoodInfoRetriever {
 
         FoodSearch foodSearch = getRequiredInformation(searchInput);
         if (!foodSearch.getFoods().isEmpty()) {
-            addToCache(searchInput, foodSearch.getFoods().toString());
+            FoodInfoCache.addToCache(searchInput, foodSearch.getFoods().toString());
             for (Food food : foodSearch.getFoods()) {
-                addToGtinUpcCache(food.getGtinUpc(), food.toString());
+                FoodInfoCache.addToGtinUpcCache(food.getGtinUpc(), food.toString());
             }
             return foodSearch.getFoods().toString();
         }
         final String notFoundMessage = "No food matching the given input";
-        addToCache(searchInput, notFoundMessage);
+        FoodInfoCache.addToCache(searchInput, notFoundMessage);
         return notFoundMessage;
     }
 
-    public FoodSearch getRequiredInformation(String searchInput) {
+    public FoodSearch getRequiredInformation(String searchInput) {//public because of the tests
         System.out.println("Sending request to FoodData Central!");
         String analyzerJsonResponse = retrieveInformationFromFDC(searchInput);
 

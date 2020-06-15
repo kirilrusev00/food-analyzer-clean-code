@@ -1,8 +1,5 @@
 package bg.sofia.uni.fmi.mjt.food.server.retriever;
 
-import bg.sofia.uni.fmi.mjt.food.server.cache.Cache;
-import bg.sofia.uni.fmi.mjt.food.server.cache.CacheFactory;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -16,19 +13,12 @@ public abstract class FoodInfoRetriever {
     private HttpClient client;
     private String apiKey;
 
-    private Cache<String, String> cache;
-    private static Cache<String, String> gtinUpcCache;
-
     public FoodInfoRetriever(HttpClient client, String apiKey) {
         this.client = client;
         this.apiKey = apiKey;
-        this.cache = CacheFactory.getInstance();
-        gtinUpcCache = CacheFactory.getInstance();
     }
 
-    public String checkInCache(String searchInput) {
-        return cache.get(searchInput);
-    }
+    public abstract String getRequiredInformationAsString(String allInformation);
 
     protected abstract String buildAnalyzerURIString(String searchInput);
 
@@ -38,11 +28,6 @@ public abstract class FoodInfoRetriever {
         System.out.println(analyzerURI);
         HttpRequest analyzerRequest = HttpRequest.newBuilder().uri(analyzerURI).build();
 
-        //TO DO: Exceptions and make async
-        /*client.sendAsync(analyzerRequest, BodyHandlers.ofString())
-                .thenApply(response -> { System.out.println(response.statusCode());
-                    return response; } )
-                .thenApply(HttpResponse::body);*/
         try {
             return client.send(analyzerRequest, HttpResponse.BodyHandlers.ofString()).body();
         } catch (IOException e) {
@@ -54,16 +39,6 @@ public abstract class FoodInfoRetriever {
         }
     }
 
-    public abstract String getRequiredInformationAsString(String allInformation);
-
-    protected void addToCache(String key, String values) {
-        cache.set(key, values);
-    }
-
-    protected void addToGtinUpcCache(String key, String values) {
-        gtinUpcCache.set(key, values);
-    }
-
     protected static String getAnalyzerUriTemplate() {
         return ANALYZER_URI_TEMPLATE;
     }
@@ -72,7 +47,4 @@ public abstract class FoodInfoRetriever {
         return apiKey;
     }
 
-    public static Cache<String, String> getGtinUpcCache() {
-        return gtinUpcCache;
-    }
 }

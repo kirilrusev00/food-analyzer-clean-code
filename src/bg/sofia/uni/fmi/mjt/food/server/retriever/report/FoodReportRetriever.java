@@ -1,5 +1,6 @@
 package bg.sofia.uni.fmi.mjt.food.server.retriever.report;
 
+import bg.sofia.uni.fmi.mjt.food.server.cache.FoodInfoCache;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.FoodInfoRetriever;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.report.search.FoodReport;
 import com.google.gson.Gson;
@@ -19,7 +20,7 @@ public class FoodReportRetriever extends FoodInfoRetriever {
 
     @Override
     public String getRequiredInformationAsString(String searchInput) {
-        String cacheInfo = checkInCache(searchInput);
+        String cacheInfo = FoodInfoCache.checkInCache(searchInput);
         if (cacheInfo != null) {
             System.out.println("Found in cache!");
             return cacheInfo;
@@ -27,12 +28,12 @@ public class FoodReportRetriever extends FoodInfoRetriever {
 
         FoodReport foodReport = getRequiredInformation(searchInput);
         if (foodReport != null) {
-            addToCache(foodReport.getFdcId(), foodReport.toString());
-            addToGtinUpcCache(foodReport.getGtinUpc(), foodReport.toString());
+            FoodInfoCache.addToCache(foodReport.getFdcId(), foodReport.toString());
+            FoodInfoCache.addToGtinUpcCache(foodReport.getGtinUpc(), foodReport.toString());
             return foodReport.toString();
         }
         final String notFoundMessage = "No food matching the given input";
-        addToCache(searchInput, notFoundMessage);
+        FoodInfoCache.addToCache(searchInput, notFoundMessage);
         return notFoundMessage;
     }
 

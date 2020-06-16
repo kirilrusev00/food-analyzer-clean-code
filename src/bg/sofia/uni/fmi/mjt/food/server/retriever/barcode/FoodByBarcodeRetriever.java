@@ -7,7 +7,7 @@ import static bg.sofia.uni.fmi.mjt.food.server.constants.Constants.START_PARAMET
 
 public class FoodByBarcodeRetriever {
 
-    private FoodByBarcodeRetriever() {
+    public FoodByBarcodeRetriever() {
 
     }
 

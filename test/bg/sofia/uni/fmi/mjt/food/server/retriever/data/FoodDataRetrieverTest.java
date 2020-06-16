@@ -40,7 +40,7 @@ public class FoodDataRetrieverTest {
     }
 
     @Test
-    public void testGetRequiredInformation_EmptyFoodList() throws IOException, InterruptedException {
+    public void testGetRequiredInformationWhenEmptyFoodList() throws IOException, InterruptedException {
         final String testSearchInput = "test search input";
         when(httpClientMock.send(Mockito.any(HttpRequest.class),
                 ArgumentMatchers.<HttpResponse.BodyHandler<String>>any())).thenReturn(httpResponseMock);
@@ -50,7 +50,7 @@ public class FoodDataRetrieverTest {
     }
 
     @Test
-    public void testGetRequiredInformation_TwoFoodsInList() throws IOException, InterruptedException {
+    public void testGetRequiredInformationWhenTwoFoodsInListFoodCount() throws IOException, InterruptedException {
         final String testSearchInput = "test search input";
         when(httpClientMock.send(Mockito.any(HttpRequest.class),
                 ArgumentMatchers.<HttpResponse.BodyHandler<String>>any())).thenReturn(httpResponseMock);
@@ -63,8 +63,53 @@ public class FoodDataRetrieverTest {
         FoodSearch actual = ((FoodDataRetriever) foodDataRetriever).getRequiredInformation(testSearchInput);
 
         assertEquals(2, actual.getFoods().size());
+    }
+
+    @Test
+    public void testGetRequiredInformationWhenTwoFoodsInListFoodDescription() throws IOException, InterruptedException {
+        final String testSearchInput = "test search input";
+        when(httpClientMock.send(Mockito.any(HttpRequest.class),
+                ArgumentMatchers.<HttpResponse.BodyHandler<String>>any())).thenReturn(httpResponseMock);
+        List<Food> testFoods = List.of(new Food("soup", "id1", "gtin1"),
+                new Food("salad", "id2", "gtin2"));
+        FoodSearch testFoodSearch = new FoodSearch(testSearchInput, testFoods);
+        String json = new Gson().toJson(testFoodSearch);
+        when(httpResponseMock.body()).thenReturn(json);
+
+        FoodSearch actual = ((FoodDataRetriever) foodDataRetriever).getRequiredInformation(testSearchInput);
+
         assertEquals("soup", actual.getFoods().get(0).getDescription());
+    }
+
+    @Test
+    public void testGetRequiredInformationWhenTwoFoodsInListFdcId() throws IOException, InterruptedException {
+        final String testSearchInput = "test search input";
+        when(httpClientMock.send(Mockito.any(HttpRequest.class),
+                ArgumentMatchers.<HttpResponse.BodyHandler<String>>any())).thenReturn(httpResponseMock);
+        List<Food> testFoods = List.of(new Food("soup", "id1", "gtin1"),
+                new Food("salad", "id2", "gtin2"));
+        FoodSearch testFoodSearch = new FoodSearch(testSearchInput, testFoods);
+        String json = new Gson().toJson(testFoodSearch);
+        when(httpResponseMock.body()).thenReturn(json);
+
+        FoodSearch actual = ((FoodDataRetriever) foodDataRetriever).getRequiredInformation(testSearchInput);
+
         assertEquals("id1", actual.getFoods().get(0).getFdcId());
+    }
+
+    @Test
+    public void testGetRequiredInformationWhenTwoFoodsInListGtinUpc() throws IOException, InterruptedException {
+        final String testSearchInput = "test search input";
+        when(httpClientMock.send(Mockito.any(HttpRequest.class),
+                ArgumentMatchers.<HttpResponse.BodyHandler<String>>any())).thenReturn(httpResponseMock);
+        List<Food> testFoods = List.of(new Food("soup", "id1", "gtin1"),
+                new Food("salad", "id2", "gtin2"));
+        FoodSearch testFoodSearch = new FoodSearch(testSearchInput, testFoods);
+        String json = new Gson().toJson(testFoodSearch);
+        when(httpResponseMock.body()).thenReturn(json);
+
+        FoodSearch actual = ((FoodDataRetriever) foodDataRetriever).getRequiredInformation(testSearchInput);
+
         assertEquals("gtin2", actual.getFoods().get(1).getGtinUpc());
     }
 }

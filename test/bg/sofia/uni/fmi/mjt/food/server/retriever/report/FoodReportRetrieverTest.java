@@ -50,7 +50,7 @@ public class FoodReportRetrieverTest {
     }
 
     @Test
-    public void testGetRequiredInformation_TwoFoodsInList() throws IOException, InterruptedException {
+    public void testGetRequiredInformationWhenTwoFoodsInListGtinUpc() throws IOException, InterruptedException {
         final String testFdcId = "0000000";
         final double delta = 0.0;
         when(httpClientMock.send(Mockito.any(HttpRequest.class),
@@ -66,8 +66,62 @@ public class FoodReportRetrieverTest {
         FoodReport actual = ((FoodReportRetriever) foodReportRetriever).getRequiredInformation(testFdcId);
 
         assertEquals("gtinUpc", actual.getGtinUpc());
+    }
+
+    @Test
+    public void testGetRequiredInformationWhenTwoFoodsInListIngredients() throws IOException, InterruptedException {
+        final String testFdcId = "0000000";
+        final double delta = 0.0;
+        when(httpClientMock.send(Mockito.any(HttpRequest.class),
+                ArgumentMatchers.<HttpResponse.BodyHandler<String>>any())).thenReturn(httpResponseMock);
+        LabelNutrients testLabelNutrients = new LabelNutrients(new LabelNutrientsInfo(10),
+                new LabelNutrientsInfo(20), new LabelNutrientsInfo(30), new LabelNutrientsInfo(40),
+                new LabelNutrientsInfo(50));
+        FoodReport testFoodReport = new FoodReport("gtinUpc","fdcId","description",
+                "ingredients", testLabelNutrients);
+        String json = new Gson().toJson(testFoodReport);
+        when(httpResponseMock.body()).thenReturn(json);
+
+        FoodReport actual = ((FoodReportRetriever) foodReportRetriever).getRequiredInformation(testFdcId);
+
         assertEquals("ingredients", actual.getIngredients());
+    }
+
+    @Test
+    public void testGetRequiredInformationWhenTwoFoodsInListCalories() throws IOException, InterruptedException {
+        final String testFdcId = "0000000";
+        final double delta = 0.0;
+        when(httpClientMock.send(Mockito.any(HttpRequest.class),
+                ArgumentMatchers.<HttpResponse.BodyHandler<String>>any())).thenReturn(httpResponseMock);
+        LabelNutrients testLabelNutrients = new LabelNutrients(new LabelNutrientsInfo(10),
+                new LabelNutrientsInfo(20), new LabelNutrientsInfo(30), new LabelNutrientsInfo(40),
+                new LabelNutrientsInfo(50));
+        FoodReport testFoodReport = new FoodReport("gtinUpc","fdcId","description",
+                "ingredients", testLabelNutrients);
+        String json = new Gson().toJson(testFoodReport);
+        when(httpResponseMock.body()).thenReturn(json);
+
+        FoodReport actual = ((FoodReportRetriever) foodReportRetriever).getRequiredInformation(testFdcId);
+
         assertEquals(10.0, actual.getLabelNutrients().getCalories().getValue(), delta);
+    }
+
+    @Test
+    public void testGetRequiredInformationWhenTwoFoodsInListFiber() throws IOException, InterruptedException {
+        final String testFdcId = "0000000";
+        final double delta = 0.0;
+        when(httpClientMock.send(Mockito.any(HttpRequest.class),
+                ArgumentMatchers.<HttpResponse.BodyHandler<String>>any())).thenReturn(httpResponseMock);
+        LabelNutrients testLabelNutrients = new LabelNutrients(new LabelNutrientsInfo(10),
+                new LabelNutrientsInfo(20), new LabelNutrientsInfo(30), new LabelNutrientsInfo(40),
+                new LabelNutrientsInfo(50));
+        FoodReport testFoodReport = new FoodReport("gtinUpc","fdcId","description",
+                "ingredients", testLabelNutrients);
+        String json = new Gson().toJson(testFoodReport);
+        when(httpResponseMock.body()).thenReturn(json);
+
+        FoodReport actual = ((FoodReportRetriever) foodReportRetriever).getRequiredInformation(testFdcId);
+
         assertEquals(50.0, actual.getLabelNutrients().getFiber().getValue(), delta);
     }
 }

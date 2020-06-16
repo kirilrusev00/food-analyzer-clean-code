@@ -2,10 +2,10 @@ package bg.sofia.uni.fmi.mjt.food.server.retriever.barcode;
 
 import bg.sofia.uni.fmi.mjt.food.server.cache.FoodInfoCache;
 
-public class FoodByBarcodeRetriever {
+import static bg.sofia.uni.fmi.mjt.food.server.constants.Constants.START_PARAMETER_CODE;
+import static bg.sofia.uni.fmi.mjt.food.server.constants.Constants.START_PARAMETER_IMG;
 
-    private static final String START_PARAMETER_IMG = "--img=";
-    private static final String START_PARAMETER_CODE = "--code=";
+public class FoodByBarcodeRetriever {
 
     private FoodByBarcodeRetriever() {
 
@@ -39,8 +39,8 @@ public class FoodByBarcodeRetriever {
     }
 
     private static boolean isCodeIncludedInCommand(String[] commandArguments) {
-        for (int i = 0; i < commandArguments.length; i++) {
-            if (commandArguments[i].startsWith(START_PARAMETER_CODE)) {
+        for (String argument : commandArguments) {
+            if (argument.startsWith(START_PARAMETER_CODE)) {
                 return true;
             }
         }

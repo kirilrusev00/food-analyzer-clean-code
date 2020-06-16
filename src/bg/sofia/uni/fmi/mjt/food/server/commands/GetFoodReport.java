@@ -1,5 +1,7 @@
 package bg.sofia.uni.fmi.mjt.food.server.commands;
 
+import static bg.sofia.uni.fmi.mjt.food.server.constants.Constants.GET_FOOD_REPORT_USAGE;
+
 public class GetFoodReport extends Command {
     private static final int INDEX_OF_ARGUMENT_GTIN_UPC = 0;
 
@@ -10,7 +12,7 @@ public class GetFoodReport extends Command {
     @Override
     public String execute(String argumentLine) {
         if (argumentLine == null) {
-            return "Usage: get-food-report <food_fdcId>";
+            return GET_FOOD_REPORT_USAGE;
         }
         String[] arguments = splitCommand(argumentLine);
 

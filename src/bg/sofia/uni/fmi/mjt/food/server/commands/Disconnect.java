@@ -1,5 +1,7 @@
 package bg.sofia.uni.fmi.mjt.food.server.commands;
 
+import static bg.sofia.uni.fmi.mjt.food.server.constants.Constants.DISCONNECTED_MESSAGE;
+
 public class Disconnect extends Command {
 
     Disconnect() {
@@ -8,6 +10,6 @@ public class Disconnect extends Command {
 
     @Override
     public String execute(String argumentsLine) {
-        return "Disconnected from server.";
+        return DISCONNECTED_MESSAGE;
     }
 }

@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 
 import java.net.http.HttpClient;
 
+import static bg.sofia.uni.fmi.mjt.food.server.constants.Constants.*;
+
 public class FoodReportRetriever extends FoodInfoRetriever {
 
     public FoodReportRetriever(HttpClient client, String apiKey) {
@@ -22,7 +24,7 @@ public class FoodReportRetriever extends FoodInfoRetriever {
     public String getRequiredInformationAsString(String searchInput) {
         String cacheInfo = FoodInfoCache.checkInCache(searchInput);
         if (cacheInfo != null) {
-            System.out.println("Found in cache!");
+            System.out.println(FOUND_IN_CACHE_MESSAGE);
             return cacheInfo;
         }
 
@@ -32,13 +34,13 @@ public class FoodReportRetriever extends FoodInfoRetriever {
             FoodInfoCache.addToGtinUpcCache(foodReport.getGtinUpc(), foodReport.toString());
             return foodReport.toString();
         }
-        final String notFoundMessage = "No food matching the given input";
+        final String notFoundMessage = NOT_FOUND_MESSAGE;
         FoodInfoCache.addToCache(searchInput, notFoundMessage);
         return notFoundMessage;
     }
 
     FoodReport getRequiredInformation(String searchInput) {
-        System.out.println("Sending request to FoodData Central!");
+        System.out.println(SENDING_REQUEST_MESSAGE);
         String analyzerJsonResponse = retrieveInformationFromFDC(searchInput);
 
         Gson gson = new Gson();

@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import static bg.sofia.uni.fmi.mjt.food.server.constants.Constants.RESOURCES_DIRECTORY;
+
 public class QRCodeReader {
 
     private static String decodeQRCode(Path qrCodeImage) throws IOException {
@@ -28,24 +30,33 @@ public class QRCodeReader {
 
     static String getQrCode(String file) {
         try {
-            Path path = Path.of(file);
-            if (!path.isAbsolute()) {
-                path = Path.of("resources" + File.separator + file);
-            }
-            String decodedText = decodeQRCode(path);
-            if (decodedText != null) {
-                System.out.println("Decoded text = " + decodedText);
-            }
-            return decodedText;
+            Path path = getPath(file);
+
+            return decodeQRCode(path);
         } catch (IOException e) {
             System.out.println("Could not decode QR Code, IOException :: " + e.getMessage());
             return null;
         }
     }
 
+    private static Path getPath(String file) {
+        Path path = Path.of(file);
+        if (!path.isAbsolute()) {
+            path = Path.of(RESOURCES_DIRECTORY + File.separator + file);
+        }
+        return path;
+    }
+
     public static void main(String[] args) {
-        getQrCode("barcode1.gif");
-        getQrCode("barcode2.gif");
-        getQrCode("barcode3.gif");
+        testGetQRCode("barcode1.gif");
+        testGetQRCode("barcode2.gif");
+        testGetQRCode("barcode3.gif");
+    }
+
+    private static void testGetQRCode(String file) {
+        String decodedText = getQrCode(file);
+        if (decodedText != null) {
+            System.out.println("Decoded text = " + decodedText);
+        }
     }
 }

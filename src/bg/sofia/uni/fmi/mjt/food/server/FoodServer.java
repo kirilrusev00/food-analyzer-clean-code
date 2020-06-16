@@ -1,6 +1,5 @@
 package bg.sofia.uni.fmi.mjt.food.server;
 
-import bg.sofia.uni.fmi.mjt.food.server.commands.Command;
 import bg.sofia.uni.fmi.mjt.food.server.commands.CommandFactory;
 
 import java.io.IOException;
@@ -24,15 +23,12 @@ public class FoodServer implements AutoCloseable {
     private ServerSocketChannel serverSocketChannel;
     private boolean isRunning = true;
 
-    //private CommandExecutor commandExecutor;
-
     public FoodServer(int port) {
         try {
             selector = Selector.open();
             commandBuffer = ByteBuffer.allocate(BUFFER_SIZE);
             serverSocketChannel = ServerSocketChannel.open();
             serverSocketChannel.socket().bind(new InetSocketAddress(port));
-            //commandExecutor = new CommandExecutor(HttpClient.newBuilder().build());
         } catch (IOException e) {
             System.err.println("Error while creating the server");
             e.printStackTrace();
@@ -62,10 +58,10 @@ public class FoodServer implements AutoCloseable {
                 while (keyIterator.hasNext()) {
                     SelectionKey key = keyIterator.next();
                     if (key.isReadable()) {
-                        System.out.println("New message from client!");
+                        System.out.println("NEW MESSAGE FROM CLIENT!");
                         this.read(key);
                     } else if (key.isAcceptable()) {
-                        System.out.println("New client!");
+                        System.out.println("NEW CLIENT!");
                         this.accept(key);
                     }
                     keyIterator.remove();
@@ -103,9 +99,9 @@ public class FoodServer implements AutoCloseable {
                 return;
             }
 
-            String reply = commandFactory.processLine(message);//commandExecutor.executeCommand(message);
-
             System.out.println("Message from client: " + message);
+
+            String reply = commandFactory.processLine(message);
             System.out.println("Reply to client: " + reply);
 
             writeInBuffer(reply);

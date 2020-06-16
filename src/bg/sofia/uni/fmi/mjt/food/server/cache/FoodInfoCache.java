@@ -20,10 +20,10 @@ public class FoodInfoCache {
     }
 
     public static void addToCache(String key, String values) {
-        cache.add(key, values, 50000000);
+        cache.add(key, values);
     }
 
     public static void addToGtinUpcCache(String key, String values) {
-        gtinUpcCache.add(key, values, 500000000);
+        gtinUpcCache.add(key, values);
     }
 }

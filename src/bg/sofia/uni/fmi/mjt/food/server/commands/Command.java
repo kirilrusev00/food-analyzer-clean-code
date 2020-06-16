@@ -11,15 +11,15 @@ public abstract class Command {
 
     public abstract String execute(String argumentLine);
 
-    protected String[] splitCommand(String command) {
+    String[] splitCommand(String command) {
         return command.trim().split(" ");
     }
 
-    protected String getFoodData(String name) {
+    String getFoodData(String name) {
         return foodDataRetriever.getRequiredInformationAsString(name);
     }
 
-    protected String getFoodReport(String gtinUpc) {
+    String getFoodReport(String gtinUpc) {
         return foodReportRetriever.getRequiredInformationAsString(gtinUpc);
     }
 }

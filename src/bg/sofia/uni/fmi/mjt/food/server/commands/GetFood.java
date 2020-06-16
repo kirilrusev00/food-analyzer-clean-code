@@ -1,5 +1,7 @@
 package bg.sofia.uni.fmi.mjt.food.server.commands;
 
+import static bg.sofia.uni.fmi.mjt.food.server.constants.Constants.GET_FOOD_USAGE;
+
 public class GetFood extends Command {
 
     GetFood() {
@@ -9,7 +11,7 @@ public class GetFood extends Command {
     @Override
     public String execute(String argumentLine) {
         if (argumentLine == null) {
-            return "Usage: get-food <food_name>";
+            return GET_FOOD_USAGE;
         }
         String[] arguments = splitCommand(argumentLine);
 

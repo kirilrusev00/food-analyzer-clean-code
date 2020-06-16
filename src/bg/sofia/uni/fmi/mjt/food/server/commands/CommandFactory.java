@@ -8,6 +8,8 @@ import java.net.http.HttpClient;
 import java.util.HashMap;
 import java.util.Map;
 
+import static bg.sofia.uni.fmi.mjt.food.server.constants.Constants.*;
+
 public class CommandFactory {
     private static final String apiKey = "LMm1mjww0SJZFfTe5ie1Dw48cS9jtdxEuI6HhOmf";
     private static final int INDEX_OF_COMMAND_NAME = 0;
@@ -27,10 +29,10 @@ public class CommandFactory {
     }
 
     private void setCommands() {
-        commands.put("disconnect", new Disconnect());
-        commands.put("get-food", new GetFood());
-        commands.put("get-food-report", new GetFoodReport());
-        commands.put("get-food-by-barcode", new GetFoodByBarcode());
+        commands.put(DISCONNECT_COMMAND_NAME, new Disconnect());
+        commands.put(GET_FOOD_COMMAND_NAME, new GetFood());
+        commands.put(GET_FOOD_REPORT_COMMAND_NAME, new GetFoodReport());
+        commands.put(GET_FOOD_BY_BARCODE_COMMAND_NAME, new GetFoodByBarcode());
     }
 
     public String processLine(String line) {
@@ -38,7 +40,7 @@ public class CommandFactory {
 
         Command command = getCommand(splittedLine[INDEX_OF_COMMAND_NAME]);
         if (command == null) {
-            return "Unknown command!";
+            return UNKNOWN_COMMAND_MESSAGE;
         }
 
         String argumentsLine;

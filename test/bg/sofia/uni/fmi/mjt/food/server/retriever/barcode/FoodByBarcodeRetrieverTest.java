@@ -60,4 +60,26 @@ public class FoodByBarcodeRetrieverTest {
 
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void testGetRequiredInformationWhenOnlyImgIsGiven() throws IOException, InterruptedException {
+        final String[] commandArguments = {"--img=barcode1.gif"};
+        final String testFdcId = QRCodeReader.getQrCode("barcode1.gif");
+        when(httpClientMock.send(Mockito.any(HttpRequest.class),
+                ArgumentMatchers.<HttpResponse.BodyHandler<String>>any())).thenReturn(httpResponseMock);
+        LabelNutrients testLabelNutrients = new LabelNutrients(new LabelNutrientsInfo(10),
+                new LabelNutrientsInfo(20), new LabelNutrientsInfo(30), new LabelNutrientsInfo(40),
+                new LabelNutrientsInfo(50));
+        FoodReport testFoodReport = new FoodReport("gtinUpc", testFdcId, "description",
+                "ingredients", testLabelNutrients);
+        String json = new Gson().toJson(testFoodReport);
+        when(httpResponseMock.body()).thenReturn(json);
+
+        foodReportRetriever.getRequiredInformationAsString(testFdcId);
+
+        String expected = FoodByBarcodeRetriever.getRequiredInformation(commandArguments);
+        String actual = FoodInfoCache.checkInGtinUpcCache(testFdcId);
+
+        assertEquals(expected, actual);
+    }
 }

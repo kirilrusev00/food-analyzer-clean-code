@@ -7,24 +7,26 @@ import static bg.sofia.uni.fmi.mjt.food.server.constants.Constants.START_PARAMET
 
 public class FoodByBarcodeRetriever {
 
-    public static String getRequiredInformation(String[] commandArguments) {
+    public static String getRequiredInformation(String argumentsLine) {
         String code;
-        if (isCodeIncludedInCommand(commandArguments)) {
-            code = getParameter(commandArguments, START_PARAMETER_CODE, START_PARAMETER_IMG);
+        if (isCodeIncludedInCommand(argumentsLine)) {
+            code = getParameter(argumentsLine, START_PARAMETER_CODE, START_PARAMETER_IMG);
         }
         else {
-            String img = getParameter(commandArguments, START_PARAMETER_IMG, START_PARAMETER_CODE);
+            String img = getParameter(argumentsLine, START_PARAMETER_IMG, START_PARAMETER_CODE);
             code = QRCodeReader.getQrCode(img);
         }
         return FoodInfoCache.checkInGtinUpcCache(code);
     }
 
-    private static String getParameter(String[] commandArguments, String parameterStart, String nextParameterStart) {
+    private static String getParameter(String argumentsLine, String parameterStart, String nextParameterStart) {
+        String[] commandArguments = argumentsLine.trim().split(" ");
+
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < commandArguments.length; i++) {
             if (commandArguments[i].startsWith(parameterStart)) {
                 stringBuilder.append(commandArguments[i]);
-                if (i + 1 < commandArguments.length && !commandArguments[i + 1].startsWith(nextParameterStart)) {
+                while (i + 1 < commandArguments.length && !commandArguments[i + 1].startsWith(nextParameterStart)) {
                     i++;
                     stringBuilder.append(" ").append(commandArguments[i]);
                 }
@@ -34,12 +36,7 @@ public class FoodByBarcodeRetriever {
         return stringBuilder.toString().replace(parameterStart, "");
     }
 
-    private static boolean isCodeIncludedInCommand(String[] commandArguments) {
-        for (String argument : commandArguments) {
-            if (argument.startsWith(START_PARAMETER_CODE)) {
-                return true;
-            }
-        }
-        return false;
+    private static boolean isCodeIncludedInCommand(String argumentsLine) {
+        return argumentsLine.contains(START_PARAMETER_CODE);
     }
 }

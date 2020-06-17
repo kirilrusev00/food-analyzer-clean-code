@@ -40,9 +40,9 @@ public class FoodByBarcodeRetrieverTest {
     }
 
     @Test
-    public void testGetRequiredInformationWhenCodeIsGiven() throws IOException, InterruptedException {
-        final String[] commandArguments = {"--img=barcode.gif", "--code=000000"};
-        final String testFdcId = "0000000";
+    public void testGetRequiredInformationWhenImgAndCodeAreGiven() throws IOException, InterruptedException {
+        final String argumentsLine = "--img=barcode1.gif --code=000010";
+        final String testFdcId = "0000010";
         when(httpClientMock.send(Mockito.any(HttpRequest.class),
                 ArgumentMatchers.<HttpResponse.BodyHandler<String>>any())).thenReturn(httpResponseMock);
         LabelNutrients testLabelNutrients = new LabelNutrients(new LabelNutrientsInfo(10),
@@ -55,16 +55,39 @@ public class FoodByBarcodeRetrieverTest {
 
         foodReportRetriever.getRequiredInformationAsString(testFdcId);
 
-        String expected = FoodByBarcodeRetriever.getRequiredInformation(commandArguments);
+        String expected = FoodByBarcodeRetriever.getRequiredInformation(argumentsLine);
+        String actual = FoodByBarcodeRetriever.getRequiredInformation(argumentsLine);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGetRequiredInformationWhenOnlyCodeIsGiven() throws IOException, InterruptedException {
+        final String argumentsLine = "--code=000011";
+        final String testFdcId = "0000011";
+        when(httpClientMock.send(Mockito.any(HttpRequest.class),
+                ArgumentMatchers.<HttpResponse.BodyHandler<String>>any())).thenReturn(httpResponseMock);
+        LabelNutrients testLabelNutrients = new LabelNutrients(new LabelNutrientsInfo(10),
+                new LabelNutrientsInfo(20), new LabelNutrientsInfo(30), new LabelNutrientsInfo(40),
+                new LabelNutrientsInfo(50));
+        FoodReport testFoodReport = new FoodReport("gtinUpc", testFdcId, "description",
+                "ingredients", testLabelNutrients);
+        String json = new Gson().toJson(testFoodReport);
+        when(httpResponseMock.body()).thenReturn(json);
+
+        foodReportRetriever.getRequiredInformationAsString(testFdcId);
+
+        String expected = FoodByBarcodeRetriever.getRequiredInformation(argumentsLine);
         String actual = FoodInfoCache.checkInGtinUpcCache(testFdcId);
 
         assertEquals(expected, actual);
     }
 
     @Test
-    public void testGetRequiredInformationWhenOnlyImgIsGiven() throws IOException, InterruptedException {
-        final String[] commandArguments = {"--img=barcode1.gif"};
-        final String testFdcId = QRCodeReader.getQrCode("barcode1.gif");
+    public void testGetRequiredInformationWhenOnlyImgIsGivenAndNameHasSpaceInIt()
+            throws IOException, InterruptedException {
+        final String argumentsLine = "--img=barcode 2.gif";
+        final String testFdcId = QRCodeReader.getQrCode("barcode 2.gif");
         when(httpClientMock.send(Mockito.any(HttpRequest.class),
                 ArgumentMatchers.<HttpResponse.BodyHandler<String>>any())).thenReturn(httpResponseMock);
         LabelNutrients testLabelNutrients = new LabelNutrients(new LabelNutrientsInfo(10),
@@ -77,7 +100,7 @@ public class FoodByBarcodeRetrieverTest {
 
         foodReportRetriever.getRequiredInformationAsString(testFdcId);
 
-        String expected = FoodByBarcodeRetriever.getRequiredInformation(commandArguments);
+        String expected = FoodByBarcodeRetriever.getRequiredInformation(argumentsLine);
         String actual = FoodInfoCache.checkInGtinUpcCache(testFdcId);
 
         assertEquals(expected, actual);

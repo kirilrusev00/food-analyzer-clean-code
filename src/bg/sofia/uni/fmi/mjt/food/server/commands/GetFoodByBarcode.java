@@ -18,11 +18,11 @@ public class GetFoodByBarcode extends Command {
         }
         String[] arguments = splitCommand(argumentsLine);
 
-        return getFoodByBarcode(arguments);
+        return getFoodByBarcode(argumentsLine);
     }
 
-    private String getFoodByBarcode(String[] commandArguments) {
-        String reply = FoodByBarcodeRetriever.getRequiredInformation(commandArguments);
+    private String getFoodByBarcode(String argumentsLine) {
+        String reply = FoodByBarcodeRetriever.getRequiredInformation(argumentsLine);
         if (reply == null) {
             return NOT_FOUND_IN_CACHE_MESSAGE;
         }

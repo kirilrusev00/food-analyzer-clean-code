@@ -12,7 +12,7 @@ import java.nio.file.Path;
 
 import static bg.sofia.uni.fmi.mjt.food.server.constants.Constants.RESOURCES_DIRECTORY;
 
-public class QRCodeReader {
+class QRCodeReader {
 
     private static String decodeQRCode(Path qrCodeImage) throws IOException {
         BufferedImage bufferedImage = ImageIO.read(qrCodeImage.toFile());
@@ -47,16 +47,4 @@ public class QRCodeReader {
         return path;
     }
 
-    public static void main(String[] args) {
-        testGetQRCode("barcode1.gif");
-        testGetQRCode("barcode2.gif");
-        testGetQRCode("barcode3.gif");
-    }
-
-    private static void testGetQRCode(String file) {
-        String decodedText = getQrCode(file);
-        if (decodedText != null) {
-            System.out.println("Decoded text = " + decodedText);
-        }
-    }
 }

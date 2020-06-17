@@ -39,14 +39,14 @@ public class GetFoodReportTest {
 
     @Test
     public void testExecuteCommandGetFoodReport() throws IOException, InterruptedException {
-        final String commandLine = "get-food-report 0000000";
+        final String commandLine = "get-food-report 1000000";
 
         when(httpClientMock.send(Mockito.any(HttpRequest.class),
                 ArgumentMatchers.<HttpResponse.BodyHandler<String>>any())).thenReturn(httpResponseMock);
         LabelNutrients testLabelNutrients = new LabelNutrients(new LabelNutrientsInfo(10),
                 new LabelNutrientsInfo(20), new LabelNutrientsInfo(30), new LabelNutrientsInfo(40),
                 new LabelNutrientsInfo(50));
-        FoodReport testFoodReport = new FoodReport("gtinUpc", "0000000", "description",
+        FoodReport testFoodReport = new FoodReport("gtinUpc", "1000000", "description",
                 "ingredients", testLabelNutrients);
         String json = new Gson().toJson(testFoodReport);
         when(httpResponseMock.body()).thenReturn(json);

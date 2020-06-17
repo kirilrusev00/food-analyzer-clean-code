@@ -16,16 +16,13 @@ public class GetFoodByBarcode extends Command {
         if (argumentsLine == null) {
             return GET_FOOD_BY_BARCODE_USAGE;
         }
-        String[] arguments = splitCommand(argumentsLine);
 
-        return getFoodByBarcode(argumentsLine);
-    }
-
-    private String getFoodByBarcode(String argumentsLine) {
         String reply = FoodByBarcodeRetriever.getRequiredInformation(argumentsLine);
         if (reply == null) {
             return NOT_FOUND_IN_CACHE_MESSAGE;
         }
+
         return reply;
     }
+
 }

@@ -11,7 +11,7 @@ import java.net.http.HttpClient;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DisconnectTest {
+public class DisconnectCommandTest {
 
     @Mock
     private HttpClient httpClientMock;

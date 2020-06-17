@@ -11,6 +11,11 @@ import java.util.Scanner;
 import static bg.sofia.uni.fmi.mjt.food.client.CommandUtilities.checkIfCorrectCommand;
 
 public class FoodClient {
+    private static final String COMMAND_PROMPT_MESSAGE = "Enter message: ";
+    private static final String SENDING_TO_THE_SERVER_MESSAGE = "Sending message <%s> to the server...";
+    private static final String REPLY_MESSAGE = "The server replied: %s";
+    private static final String DISCONNECT_COMMAND_NAME = "disconnect";
+
     private String serverHost;
     private int serverPort;
 
@@ -28,18 +33,18 @@ public class FoodClient {
             socketChannel.connect(new InetSocketAddress(serverHost, serverPort));
 
             while (true) {
-                System.out.println("Enter message: ");
+                System.out.println(COMMAND_PROMPT_MESSAGE);
                 String command = scanner.nextLine();
                 if (!checkIfCorrectCommand(command)) {
                     continue;
                 }
 
-                System.out.println("Sending message <" + command + "> to the server...");
+                System.out.println(String.format(SENDING_TO_THE_SERVER_MESSAGE, command));
                 printWriter.println(command);
                 String reply = reader.readLine();
 
-                System.out.println("The server replied: " + reply);
-                if ("disconnect".equalsIgnoreCase(command.split(" ")[0])) {
+                System.out.println(String.format(REPLY_MESSAGE, reply));
+                if (DISCONNECT_COMMAND_NAME.equalsIgnoreCase(command.split(" ")[0])) {
                     break;
                 }
             }

@@ -156,8 +156,8 @@ public class FoodServer implements AutoCloseable {
     }
 
     public static void main(String[] args) {
-        FoodServer chatServer = new FoodServer(SERVER_PORT);
-        chatServer.start();
-        chatServer.run();
+        FoodServer foodServer = new FoodServer(SERVER_PORT);
+        foodServer.start();
+        foodServer.run();
     }
 }

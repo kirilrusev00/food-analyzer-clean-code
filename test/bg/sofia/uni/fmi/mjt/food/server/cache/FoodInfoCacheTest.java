@@ -1,6 +1,8 @@
-package bg.sofia.uni.fmi.mjt.food.server.retriever;
+package bg.sofia.uni.fmi.mjt.food.server.cache;
 
-import bg.sofia.uni.fmi.mjt.food.server.cache.FoodInfoCache;
+import bg.sofia.uni.fmi.mjt.food.server.retriever.FoodInfoRetriever;
+import bg.sofia.uni.fmi.mjt.food.server.retriever.FoodInfoRetrieverFactory;
+import bg.sofia.uni.fmi.mjt.food.server.retriever.InformationType;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.data.search.Food;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.data.search.FoodSearch;
 import bg.sofia.uni.fmi.mjt.food.server.retriever.report.search.FoodReport;
@@ -25,7 +27,7 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FoodInfoRetrieverTest {
+public class FoodInfoCacheTest {
     @Mock
     private HttpClient httpClientMock;
 
@@ -42,7 +44,7 @@ public class FoodInfoRetrieverTest {
     }
 
     @Test
-    public void testFoodReportGetRequiredInformationAsString_CheckInCache_WhenFoodInCache() throws Exception {
+    public void testCheckInCacheWhenFoodInCacheAndAddingFoodReport() throws Exception {
         final String testFdcId = "0000000";
         when(httpClientMock.send(Mockito.any(HttpRequest.class),
                 ArgumentMatchers.<HttpResponse.BodyHandler<String>>any())).thenReturn(httpResponseMock);
@@ -61,15 +63,7 @@ public class FoodInfoRetrieverTest {
     }
 
     @Test
-    public void testGetRequiredInformationAsString_CheckInCache_WhenFoodNotInCache() throws Exception {
-        final String testFdcId = "0000000";
-        String actual = FoodInfoCache.checkInCache(testFdcId);
-
-        assertNull(actual);
-    }
-
-    @Test
-    public void testFoodDataGetRequiredInformationAsString_CheckInCache_WhenFoodInCache() throws Exception {
+    public void testCheckInCacheWhenFoodInCacheAndAddingFoodData() throws Exception {
         final String testSearchInput = "test";
         when(httpClientMock.send(Mockito.any(HttpRequest.class),
                 ArgumentMatchers.<HttpResponse.BodyHandler<String>>any())).thenReturn(httpResponseMock);
@@ -83,5 +77,13 @@ public class FoodInfoRetrieverTest {
         String actual = FoodInfoCache.checkInCache(testSearchInput);
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testCheckInCacheWhenFoodNotInCache() throws Exception {
+        final String testFdcId = "0000050";
+        String actual = FoodInfoCache.checkInCache(testFdcId);
+
+        assertNull(actual);
     }
 }

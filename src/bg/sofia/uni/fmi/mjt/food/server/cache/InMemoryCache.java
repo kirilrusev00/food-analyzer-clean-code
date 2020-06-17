@@ -42,11 +42,6 @@ public class InMemoryCache<K, V> {
         }
     }
 
-    /*
-        private void remove(K key) {
-            cache.remove(key);
-        }
-    */
     public V get(K key) {
         return Optional.ofNullable(cache.get(key))
                 .map(SoftReference::get)
@@ -54,20 +49,6 @@ public class InMemoryCache<K, V> {
                 .map(CacheObject::getValue)
                 .orElse(null);
     }
-    /*
-    public void clear() {
-        cache.clear();
-    }
-
-    public long size() {
-        return cache.entrySet()
-                .stream()
-                .filter(entry -> Optional.ofNullable(entry.getValue())
-                        .map(SoftReference::get)
-                        .map(cacheObject -> !cacheObject.isExpired())
-                        .orElse(false))
-                .count();
-    }*/
 
     private static class CacheObject<V> {
 

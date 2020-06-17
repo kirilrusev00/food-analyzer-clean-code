@@ -1,15 +1,9 @@
 package bg.sofia.uni.fmi.mjt.food.server.cache;
 
-import bg.sofia.uni.fmi.mjt.food.server.cache.InMemoryCache;
-
 public class FoodInfoCache {
 
     private static InMemoryCache<String, String> cache = new InMemoryCache<>();
     private static InMemoryCache<String, String> gtinUpcCache = new InMemoryCache<>();
-
-    public FoodInfoCache() {
-
-    }
 
     public static String checkInCache(String searchInput) {
         return cache.get(searchInput);

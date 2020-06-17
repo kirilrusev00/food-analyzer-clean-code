@@ -47,10 +47,10 @@ public class CommandFactory {
     }
 
     private void setCommands() {
-        commands.put(DISCONNECT_COMMAND_NAME, new Disconnect());
-        commands.put(GET_FOOD_COMMAND_NAME, new GetFood());
-        commands.put(GET_FOOD_REPORT_COMMAND_NAME, new GetFoodReport());
-        commands.put(GET_FOOD_BY_BARCODE_COMMAND_NAME, new GetFoodByBarcode());
+        commands.put(DISCONNECT_COMMAND_NAME, new DisconnectCommand());
+        commands.put(GET_FOOD_COMMAND_NAME, new GetFoodCommand());
+        commands.put(GET_FOOD_REPORT_COMMAND_NAME, new GetFoodReportCommand());
+        commands.put(GET_FOOD_BY_BARCODE_COMMAND_NAME, new GetFoodByBarcodeCommand());
     }
 
     private Command getCommand(String line) {

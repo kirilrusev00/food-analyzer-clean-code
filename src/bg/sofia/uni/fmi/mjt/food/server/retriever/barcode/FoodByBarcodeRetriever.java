@@ -11,8 +11,7 @@ public class FoodByBarcodeRetriever {
         String code;
         if (isCodeIncludedInCommand(argumentsLine)) {
             code = getParameter(argumentsLine, START_PARAMETER_CODE, START_PARAMETER_IMG);
-        }
-        else {
+        } else {
             String img = getParameter(argumentsLine, START_PARAMETER_IMG, START_PARAMETER_CODE);
             code = QRCodeReader.getQrCode(img);
         }

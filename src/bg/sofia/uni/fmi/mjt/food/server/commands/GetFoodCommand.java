@@ -2,9 +2,9 @@ package bg.sofia.uni.fmi.mjt.food.server.commands;
 
 import static bg.sofia.uni.fmi.mjt.food.server.constants.Constants.GET_FOOD_USAGE;
 
-public class GetFood extends Command {
+public class GetFoodCommand extends Command {
 
-    GetFood() {
+    GetFoodCommand() {
 
     }
 

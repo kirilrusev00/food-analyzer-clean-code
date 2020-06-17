@@ -2,9 +2,9 @@ package bg.sofia.uni.fmi.mjt.food.server.commands;
 
 import static bg.sofia.uni.fmi.mjt.food.server.constants.Constants.DISCONNECTED_MESSAGE;
 
-public class Disconnect extends Command {
+public class DisconnectCommand extends Command {
 
-    Disconnect() {
+    DisconnectCommand() {
 
     }
 

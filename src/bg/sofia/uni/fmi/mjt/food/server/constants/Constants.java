@@ -24,4 +24,11 @@ public class Constants {
     public static final String SENDING_REQUEST_MESSAGE = "Sending request to FoodData Central!";
 
     public static final String RESOURCES_DIRECTORY = "resources";
+
+    public static final String NO_READY_CHANNELS_MESSAGE = "Still waiting for a ready channel...";
+    public static final String NEW_MESSAGE_FROM_CLIENT_MESSAGE = "NEW MESSAGE FROM CLIENT!";
+    public static final String NEW_CLIENT_CONNECTED_MESSAGE = "NEW CLIENT!";
+    public static final String MESSAGE_FROM_CLIENT = "Message from client: %s";
+    public static final String REPLY_TO_CLIENT = "Reply to client: %s";
+    public static final String NO_MESSAGE_FROM_CLIENT_MESSAGE = "Nothing to read, closing channel";
 }

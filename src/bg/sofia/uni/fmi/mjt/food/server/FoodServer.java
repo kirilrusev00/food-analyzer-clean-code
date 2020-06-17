@@ -14,6 +14,8 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+import static bg.sofia.uni.fmi.mjt.food.server.constants.Constants.*;
+
 public class FoodServer implements AutoCloseable {
     private static final int SERVER_PORT = 1111;
     private static final int BUFFER_SIZE = 8 * 1024;
@@ -49,7 +51,7 @@ public class FoodServer implements AutoCloseable {
             while (isRunning) {
                 int readyChannels = selector.select();
                 if (readyChannels <= 0) {
-                    System.out.println("Still waiting for a ready channel...");
+                    System.out.println(NO_READY_CHANNELS_MESSAGE);
                     continue;
                 }
 
@@ -58,10 +60,10 @@ public class FoodServer implements AutoCloseable {
                 while (keyIterator.hasNext()) {
                     SelectionKey key = keyIterator.next();
                     if (key.isReadable()) {
-                        System.out.println("NEW MESSAGE FROM CLIENT!");
+                        System.out.println(NEW_MESSAGE_FROM_CLIENT_MESSAGE);
                         this.read(key);
                     } else if (key.isAcceptable()) {
-                        System.out.println("NEW CLIENT!");
+                        System.out.println(NEW_CLIENT_CONNECTED_MESSAGE);
                         this.accept(key);
                     }
                     keyIterator.remove();
@@ -99,10 +101,10 @@ public class FoodServer implements AutoCloseable {
                 return;
             }
 
-            System.out.println("Message from client: " + message);
+            System.out.println(String.format(MESSAGE_FROM_CLIENT, message));
 
             String reply = commandFactory.processLine(message);
-            System.out.println("Reply to client: " + reply);
+            System.out.println(String.format(REPLY_TO_CLIENT, reply));
 
             writeInBuffer(reply);
 
@@ -118,7 +120,7 @@ public class FoodServer implements AutoCloseable {
         commandBuffer.clear();
         int r = socketChannel.read(commandBuffer);
         if (r <= 0) {
-            System.out.println("Nothing to read, closing channel");
+            System.out.println(NO_MESSAGE_FROM_CLIENT_MESSAGE);
             socketChannel.close();
             return null;
         }

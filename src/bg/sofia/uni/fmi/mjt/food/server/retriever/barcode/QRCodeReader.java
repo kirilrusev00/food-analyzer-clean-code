@@ -14,6 +14,17 @@ import static bg.sofia.uni.fmi.mjt.food.server.constants.Constants.RESOURCES_DIR
 
 class QRCodeReader {
 
+    static String getQrCode(String file) {
+        try {
+            Path path = getPath(file);
+
+            return decodeQRCode(path);
+        } catch (IOException e) {
+            System.out.println("Could not decode QR Code, IOException :: " + e.getMessage());
+            return null;
+        }
+    }
+
     private static String decodeQRCode(Path qrCodeImage) throws IOException {
         BufferedImage bufferedImage = ImageIO.read(qrCodeImage.toFile());
         LuminanceSource source = new BufferedImageLuminanceSource(bufferedImage);
@@ -24,17 +35,6 @@ class QRCodeReader {
             return result.getText();
         } catch (NotFoundException e) {
             System.out.println("There is no QR code in the image");
-            return null;
-        }
-    }
-
-    static String getQrCode(String file) {
-        try {
-            Path path = getPath(file);
-
-            return decodeQRCode(path);
-        } catch (IOException e) {
-            System.out.println("Could not decode QR Code, IOException :: " + e.getMessage());
             return null;
         }
     }

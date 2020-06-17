@@ -30,7 +30,7 @@ public class InMemoryCache<K, V> {
         cleanerThread.start();
     }
 
-    public void add(K key, V value) {
+    void add(K key, V value) {
         if (key == null) {
             return;
         }
@@ -42,7 +42,7 @@ public class InMemoryCache<K, V> {
         }
     }
 
-    public V get(K key) {
+    V get(K key) {
         return Optional.ofNullable(cache.get(key))
                 .map(SoftReference::get)
                 .filter(cacheObject -> !cacheObject.isExpired())

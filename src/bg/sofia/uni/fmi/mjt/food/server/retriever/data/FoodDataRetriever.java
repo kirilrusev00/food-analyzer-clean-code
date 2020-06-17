@@ -45,7 +45,7 @@ public class FoodDataRetriever extends FoodInfoRetriever {
         return notFoundMessage;
     }
 
-    public FoodSearch getRequiredInformation(String searchInput) {//public because of the tests
+    FoodSearch getRequiredInformation(String searchInput) {
         System.out.println(SENDING_REQUEST_MESSAGE);
         String analyzerJsonResponse = retrieveInformationFromFDC(searchInput);
 

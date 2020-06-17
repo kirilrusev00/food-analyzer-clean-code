@@ -28,13 +28,6 @@ public class CommandFactory {
                 FoodInfoRetrieverFactory.getInstance(InformationType.REPORT, httpClient, apiKey);
     }
 
-    private void setCommands() {
-        commands.put(DISCONNECT_COMMAND_NAME, new Disconnect());
-        commands.put(GET_FOOD_COMMAND_NAME, new GetFood());
-        commands.put(GET_FOOD_REPORT_COMMAND_NAME, new GetFoodReport());
-        commands.put(GET_FOOD_BY_BARCODE_COMMAND_NAME, new GetFoodByBarcode());
-    }
-
     public String processLine(String line) {
         String[] splittedLine = splitCommand(line);
 
@@ -51,6 +44,13 @@ public class CommandFactory {
         }
 
         return command.execute(argumentsLine);
+    }
+
+    private void setCommands() {
+        commands.put(DISCONNECT_COMMAND_NAME, new Disconnect());
+        commands.put(GET_FOOD_COMMAND_NAME, new GetFood());
+        commands.put(GET_FOOD_REPORT_COMMAND_NAME, new GetFoodReport());
+        commands.put(GET_FOOD_BY_BARCODE_COMMAND_NAME, new GetFoodByBarcode());
     }
 
     private Command getCommand(String line) {
